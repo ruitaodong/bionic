@@ -1,0 +1,41 @@
+#!/bin/bash
+
+shopt -s nullglob
+
+nvidia_args=''
+
+device_args=''
+
+for a in /dev/nvidia* /dev/snd
+do
+  device_args="${device_args} --device ${a}"
+done
+
+nvidia_lib=/usr/local/lib
+
+for a in /usr/bin/nvidia*
+do
+  nvidia_args="${nvidia_args} -v ${a}:/usr/local/bin/${a##*/}:ro"
+done
+
+for a in /usr/lib/x86_64-linux-gnu/libcuda.so.1 /usr/lib/x86_64-linux-gnu/lib*nvidia*.so.*
+do
+  nvidia_args="${nvidia_args} -v ${a}:${nvidia_lib}/${a##*/}:ro"
+done
+
+for a in $(findmnt -t nfs,nfs4 -n -o target) /scratch /home /share /tmp/gsrvdir* /tmp/.X11-unix /dev/dri
+do
+  mnt_args="$mnt_args -v $a:$a"
+done
+#echo "mnt_args = " ${mnt_args}
+
+exec docker run --rm -ti\
+    --user=`id -u`\
+    --group-add audio --group-add video --group-add 109\
+    -e HOME -e DISPLAY -e TERM\
+    -e LD_LIBRARY_PATH=${nvidia_lib}\
+    ${device_args} ${mnt_args} ${nvidia_args}\
+    --network=host\
+    -v ${HOME}/.Xauthority:/root/.Xauthority\
+    -w ${PWD}\
+    bionic "$@"
