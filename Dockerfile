@@ -8,17 +8,19 @@ ENV	DEBIAN_FRONTEND noninteractive
 
 COPY	--from=XENIAL /usr/lib/x86_64-linux-gnu/libpng12* /usr/local/lib/
 
-RUN	apt-get update && apt-get install -y strace xpdf net-tools tcsh xemacs21 screen git-core python3 libjpeg62 make
+RUN	ln -s /usr/x86_64-linux-gnu/libtiff.so.5 /usr/local/lib/libtiff.so.3
+
+RUN	apt-get update && apt-get install -y net-tools tcsh xemacs21 ispell screen git-core libjpeg62 xpdf make strace 
 
 RUN	apt-get install -y xterm x11-xserver-utils x11vnc xtightvncviewer xvfb
 
 RUN	apt-get install -y libglu1-mesa mesa-utils libgl1-mesa-dri libgl1-mesa-glx 
 
-ADD 	https://netactuate.dl.sourceforge.net/project/virtualgl/2.6.5/virtualgl_2.6.5_amd64.deb /tmp
-RUN	dpkg -i /tmp/virtualgl_2.6.5_amd64.deb && rm -f /tmp/virtualgl_2.6.5_amd64.deb
+RUN	apt-get install -y qgis python-qgis python3-rasterio gdal-bin python3-fiona\
+	libtiff-tools python3-openslide hdf5-tools python3-h5py
 
 COPY	bin/	/usr/local/bin/
 
-RUN	ln -s 	x86_64-linux-gnu/libtiff.so.5 /usr/local/lib/libtiff.so.3
+ENV	LD_LIBRARY_PATH /usr/local/lib
 
 CMD	[ "tcsh" ]
