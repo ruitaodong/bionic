@@ -1,5 +1,10 @@
 #!/bin/bash
 
+prog=$(basename $0)
+if [ ${prog} = "bionic" ]; then
+    prog=
+fi
+
 shopt -s nullglob
 
 nvidia_args=''
@@ -38,4 +43,4 @@ exec docker run --rm -ti\
     --network=host\
     -v ${HOME}/.Xauthority:/root/.Xauthority\
     -w ${PWD}\
-    bionic "$@"
+    bionic ${prog} "$@"
