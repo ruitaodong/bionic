@@ -8,7 +8,7 @@ ENV	DEBIAN_FRONTEND noninteractive
 
 COPY	--from=XENIAL /usr/lib/x86_64-linux-gnu/libpng12* /usr/local/lib/
 
-RUN	ln -s /usr/x86_64-linux-gnu/libtiff.so.5 /usr/local/lib/libtiff.so.3
+RUN	ln -s /usr/lib/x86_64-linux-gnu/libtiff.so.5 /usr/local/lib/libtiff.so.3
 
 RUN	apt-get update && apt-get install -y net-tools tcsh xemacs21 ispell screen git-core libjpeg62 xpdf make strace 
 
