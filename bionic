@@ -23,7 +23,7 @@ do
   nvidia_args="${nvidia_args} -v ${a}:/usr/local/bin/${a##*/}:ro"
 done
 
-for a in /usr/lib/x86_64-linux-gnu/libcuda.so.1 /usr/lib/x86_64-linux-gnu/lib*nvidia*.so.*
+for a in /usr/lib/x86_64-linux-gnu/libcuda.so.1* /usr/lib/x86_64-linux-gnu/lib*nvidia*.so.*
 do
   nvidia_args="${nvidia_args} -v ${a}:${nvidia_lib}/${a##*/}:ro"
 done
