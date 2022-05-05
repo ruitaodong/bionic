@@ -19,6 +19,8 @@ RUN	apt-get install -y libglu1-mesa mesa-utils libgl1-mesa-dri libgl1-mesa-glx
 RUN	apt-get install -y qgis python-qgis python3-rasterio gdal-bin python3-fiona\
 	libtiff-tools python3-openslide hdf5-tools python3-h5py
 
+RUN	apt-get install -y openssh-server
+
 COPY	bin/	/usr/local/bin/
 
 ENV	LD_LIBRARY_PATH /usr/local/lib
